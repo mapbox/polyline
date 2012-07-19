@@ -31,10 +31,23 @@ polyline.encodeCoordinate = function(coordinate) {
     // TODO: understand
     while (coordinate >= 0x20) {
         output += String.fromCharCode((0x20 | (coordinate & 0x1f)) + 63);
+        // Read the next chunk of 5 bits
         coordinate >>= 5;
     }
+    // Read the last chunk
     output += String.fromCharCode(coordinate + 63);
     return output;
+};
+
+/*
+ * See http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/decode.js
+ */
+polyline.decodeCoordinate = function(str) {
+    for (var i = 0; i < str.length; i++) {
+        var binary = str.charCodeAt(i) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+    }
 };
 
 /*

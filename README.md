@@ -5,6 +5,8 @@
 A simple [google-esque polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
 implementation in Javascript
 
+# [Documentation](https://github.com/tmcw/polyline/blob/master/API.md)
+
 ## See Also
 
 * [polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)

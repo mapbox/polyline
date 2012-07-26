@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/tmcw/polyline.png?branch=master)](http://travis-ci.org/tmcw/polyline)
+
 # polyline
 
 A simple [google-esque polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)

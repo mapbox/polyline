@@ -3,7 +3,9 @@
 # polyline
 
 A simple [google-esque polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
-implementation in Javascript
+implementation in Javascript. Compatible with nodejs (`npm install polyline` and the browser (copy `src/polyline.js`)).
+
+Encodes/decodes into lat/lng coordinate pairs. Flip the pairs to be compatible with GeoJSON.
 
 # [Documentation](https://github.com/tmcw/polyline/blob/master/API.md)
 

@@ -1,47 +1,26 @@
 var polyline = {};
 
-/*
- * Based off of [the offical Google document](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
- *
- * Some parts from [this implementation](http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/PolylineEncoder.js)
- * by [Mark McClure](http://facstaff.unca.edu/mcmcclur/)
- */
+// Based off of [the offical Google document](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
+//
+// Some parts from [this implementation](http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/PolylineEncoder.js)
+// by [Mark McClure](http://facstaff.unca.edu/mcmcclur/)
 
-/*
- * Encoding coordinates
- *
- * @param {Number} coordinate a single coordinate number
- * @return {String} an encoded point
- *
- * > Note that the backslash is interpreted as an escape character within string literals.
- * Any output of this utility should convert backslash characters to
- * double-backslashes within string literals.
- */
 polyline.encodeCoordinate = function(coordinate) {
-    // step 2
     coordinate = Math.round(coordinate * 1e5);
-    // step 4
     coordinate <<= 1;
-    // step 5
     if (coordinate < 0) {
         coordinate = ~coordinate;
     }
     var output = '';
-    // step 6
-    // TODO: understand
     while (coordinate >= 0x20) {
         output += String.fromCharCode((0x20 | (coordinate & 0x1f)) + 63);
-        // Read the next chunk of 5 bits
         coordinate >>= 5;
     }
-    // Read the last chunk
     output += String.fromCharCode(coordinate + 63);
     return output;
 };
 
-/*
- * See http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/decode.js
- */
+// See http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/decode.js
 polyline.decodeCoordinate = function(str) {
     for (var i = 0; i < str.length; i++) {
         var binary = str.charCodeAt(i) - 63;
@@ -50,31 +29,85 @@ polyline.decodeCoordinate = function(str) {
     }
 };
 
-/*
- * Simple encoding of a point, simply encoding two coordinates
- */
+// This is adapted from the implementation in Project-OSRM
+// https://github.com/DennisOSRM/Project-OSRM-Web/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
+polyline.decodeLine = function(str) {
+
+    var index = 0,
+        lat = 0,
+        lng = 0,
+        coordinates = [],
+        shift = 0,
+        result = 0,
+        byte = null,
+        latitude_change,
+        longitude_change;
+
+    // Coordinates have variable length when encoded, so just keep
+    // track of whether we've hit the end of the string. In each
+    // loop iteration, a single coordinate is decoded.
+    while (index < str.length) {
+
+        // Reset shift, result, and byte
+        byte = null;
+        shift = 0;
+        result = 0;
+
+        do {
+            byte = str.charCodeAt(index++) - 63;
+            result |= (byte & 0x1f) << shift;
+            shift += 5;
+        } while (byte >= 0x20);
+
+        latitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));
+
+        shift = result = 0;
+
+        do {
+            byte = str.charCodeAt(index++) - 63;
+            result |= (byte & 0x1f) << shift;
+            shift += 5;
+        } while (byte >= 0x20);
+
+        longitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));
+
+        lat += latitude_change;
+        lng += longitude_change;
+
+        var precision = Math.pow(10, -5);
+
+        coordinates.push([lat * precision, lng * precision]);
+    }
+
+    return coordinates;
+};
+
+// Simple encoding of a point, simply encoding two coordinates
 polyline.encodePoint = function(x, y) {
     return this.encodeCoordinate(x) + this.encodeCoordinate(y);
 };
 
-/*
- * Currently failing tests.
- *
- * @param {Array} coordinates a two-dimensional array of coordinates in latitude and longitude
- * @return {String} an encoded polyline
- */
 polyline.encodeLine = function(coordinates) {
     var previous_point,
-        output = '';
+        output = '',
+        longitude = 0,
+        latitude = 0;
+
     for (var i = 0; i < coordinates.length; i++) {
-        var pt = [coordinates[i][0], coordinates[i][1]];
-        if (previous_point) {
-             pt[i] = [
-                  previous_point[0]-pt[0],
-                  previous_point[1]-pt[1]];
+        var pt = [
+            coordinates[i][0],
+            coordinates[i][1]];
+
+        if (latitude || longitude) {
+            pt = [
+                pt[0] - latitude,
+                pt[1] - longitude];
         }
+
         output += this.encodePoint(pt[0], pt[1]);
-        previous_point = coordinates[i];
+
+        latitude = pt[0];
+        longitude = pt[1];
     }
     return output;
 };

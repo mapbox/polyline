@@ -106,8 +106,8 @@ polyline.encodeLine = function(coordinates) {
 
         output += this.encodePoint(pt[0], pt[1]);
 
-        latitude = pt[0];
-        longitude = pt[1];
+        latitude = coordinates[i][0];
+        longitude = coordinates[i][1];
     }
     return output;
 };

@@ -5,7 +5,7 @@ var polyline = {};
 // Some parts from [this implementation](http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/PolylineEncoder.js)
 // by [Mark McClure](http://facstaff.unca.edu/mcmcclur/)
 
-polyline.encodeCoordinate = function(coordinate) {
+function encode(coordinate) {
     coordinate = Math.round(coordinate * 1e5);
     coordinate <<= 1;
     if (coordinate < 0) {
@@ -18,21 +18,11 @@ polyline.encodeCoordinate = function(coordinate) {
     }
     output += String.fromCharCode(coordinate + 63);
     return output;
-};
-
-// See http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/decode.js
-polyline.decodeCoordinate = function(str) {
-    var result = 0, shift = 0;
-    for (var i = 0; i < str.length; i++) {
-        var binary = str.charCodeAt(i) - 63;
-        result |= (binary & 0x1f) << shift;
-        shift += 5;
-    }
-};
+}
 
 // This is adapted from the implementation in Project-OSRM
 // https://github.com/DennisOSRM/Project-OSRM-Web/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
-polyline.decodeLine = function(str) {
+polyline.decode = function(str) {
 
     var index = 0,
         lat = 0,
@@ -83,33 +73,17 @@ polyline.decodeLine = function(str) {
     return coordinates;
 };
 
-// Simple encoding of a point, simply encoding two coordinates
-polyline.encodePoint = function(x, y) {
-    return this.encodeCoordinate(x) + this.encodeCoordinate(y);
-};
+polyline.encode = function(coordinates) {
+    if (!coordinates.length) return '';
 
-polyline.encodeLine = function(coordinates) {
-    var previous_point,
-        output = '',
-        longitude = 0,
-        latitude = 0;
+    var output = encode(coordinates[0][0]) + encode(coordinates[0][1]);
 
-    for (var i = 0; i < coordinates.length; i++) {
-        var pt = [
-            coordinates[i][0],
-            coordinates[i][1]];
-
-        if (latitude || longitude) {
-            pt = [
-                pt[0] - latitude,
-                pt[1] - longitude];
-        }
-
-        output += this.encodePoint(pt[0], pt[1]);
-
-        latitude = pt[0];
-        longitude = pt[1];
+    for (var i = 1; i < coordinates.length; i++) {
+        var a = coordinates[i], b = coordinates[i - 1];
+        output += encode(a[0] - b[0]);
+        output += encode(a[1] - b[1]);
     }
+
     return output;
 };
 

@@ -1,8 +1,7 @@
 var assert = require('assert'),
-polyline = require('../');
+    polyline = require('../');
 
 describe('polyline', function() {
-
     function compare(coords, against) {
         function a(x) { return Math.round(x * 100) / 100; }
         coords.forEach(function(c, i) {
@@ -11,21 +10,13 @@ describe('polyline', function() {
         });
     }
 
-    describe('#encodeCoordinate()', function() {
-        it('should encode one of the google reference coords', function() {
-            assert.equal(polyline.encodeCoordinate(-179.9832104), '`~oia@');
+    describe('#decode()', function() {
+        it('decodes an empty Array', function() {
+            assert.deepEqual(polyline.decode(''), []);
         });
-    });
 
-    describe('#encodePoint()', function() {
-        it('should encode one of the google reference points', function() {
-            assert.equal(polyline.encodePoint(38.5, -120.2), '_p~iF~ps|U');
-        });
-    });
-
-    describe('#decodeLine()', function() {
-        it('should decode a google reference line', function() {
-            var coords = polyline.decodeLine('_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+        it('decodes a String into an Array of lat/lon pairs', function() {
+            var coords = polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@');
             var against = [
                 [38.5, -120.2],
                 [40.7, -120.95],
@@ -35,17 +26,13 @@ describe('polyline', function() {
         });
     });
 
-    describe('#encodeLine()', function() {
-        it('should encode two points', function() {
-            assert.equal(polyline.encodeLine([[38.5, -120.2], [40.7, -120.95]]), '_p~iF~ps|U_ulLnnqC');
+    describe('#encode()', function() {
+        it('encodes an empty Array', function() {
+            assert.equal(polyline.encode([]), '');
+        });
+
+        it('encodes an Array of lat/lon pairs into a String', function() {
+            assert.equal(polyline.encode([[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]]), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
         });
     });
-
-    describe('back and forth', function() {
-        it('should encode two points', function() {
-            assert.equal(polyline.encodeLine([[38.5, -120.2], [40.7, -120.95]]), '_p~iF~ps|U_ulLnnqC');
-            compare(polyline.decodeLine('_p~iF~ps|U_ulLnnqC'), [[38.5, -120.2], [40.7, -120.95]]);
-        });
-    });
-
 });

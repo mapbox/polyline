@@ -9,14 +9,19 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "jshint": "2.3.0",
     "mocha": "1.2.x"
   },
   "optionalDependencies": {},
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "jshint src && mocha -R spec"
   },
   "main": "src/polyline.js",
   "engines": {
     "node": "*"
+  },
+  "jshintConfig": {
+    "undef": true,
+    "node": true
   }
 }

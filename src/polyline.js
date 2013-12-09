@@ -22,9 +22,10 @@ polyline.encodeCoordinate = function(coordinate) {
 
 // See http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/decode.js
 polyline.decodeCoordinate = function(str) {
+    var result = 0, shift = 0;
     for (var i = 0; i < str.length; i++) {
         var binary = str.charCodeAt(i) - 63;
-        result |= (b & 0x1f) << shift;
+        result |= (binary & 0x1f) << shift;
         shift += 5;
     }
 };

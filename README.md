@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/tmcw/polyline.png?branch=master)](http://travis-ci.org/tmcw/polyline)
+[![Build Status](https://secure.travis-ci.org/mapbox/polyline.png?branch=master)](http://travis-ci.org/mapbox/polyline)
 
 # polyline
 
@@ -7,7 +7,7 @@ implementation in Javascript. Compatible with nodejs (`npm install polyline` and
 
 Encodes/decodes into lat/lng coordinate pairs. Flip the pairs to be compatible with GeoJSON.
 
-# [Documentation](https://github.com/tmcw/polyline/blob/master/API.md)
+# [Documentation](https://github.com/mapbox/polyline/blob/master/API.md)
 
 ## See Also
 

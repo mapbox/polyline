@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/tmcw/polyline.git"
+    "url": "git://github.com/mapbox/polyline.git"
   },
   "dependencies": {},
   "devDependencies": {

@@ -2,6 +2,8 @@ var assert = require('assert'),
     polyline = require('../');
 
 describe('polyline', function() {
+    var example = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]];
+
     function compare(coords, against) {
         function a(x) { return Math.round(x * 100) / 100; }
         coords.forEach(function(c, i) {
@@ -16,13 +18,11 @@ describe('polyline', function() {
         });
 
         it('decodes a String into an Array of lat/lon pairs', function() {
-            var coords = polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@');
-            var against = [
-                [38.5, -120.2],
-                [40.7, -120.95],
-                [43.252, -126.453]
-            ];
-            compare(coords, against);
+            compare(polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@'), example);
+        });
+
+        it('decodes with a custom precision', function() {
+            compare(polyline.decode('_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI', 6), example);
         });
     });
 
@@ -32,7 +32,11 @@ describe('polyline', function() {
         });
 
         it('encodes an Array of lat/lon pairs into a String', function() {
-            assert.equal(polyline.encode([[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]]), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+            assert.equal(polyline.encode(example), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+        });
+
+        it('encodes with a custom precision', function() {
+            assert.equal(polyline.encode(example, 6), '_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI');
         });
     });
 });

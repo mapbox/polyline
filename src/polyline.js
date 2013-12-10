@@ -5,8 +5,8 @@ var polyline = {};
 // Some parts from [this implementation](http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/PolylineEncoder.js)
 // by [Mark McClure](http://facstaff.unca.edu/mcmcclur/)
 
-function encode(coordinate) {
-    coordinate = Math.round(coordinate * 1e5);
+function encode(coordinate, factor) {
+    coordinate = Math.round(coordinate * factor);
     coordinate <<= 1;
     if (coordinate < 0) {
         coordinate = ~coordinate;
@@ -22,8 +22,7 @@ function encode(coordinate) {
 
 // This is adapted from the implementation in Project-OSRM
 // https://github.com/DennisOSRM/Project-OSRM-Web/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
-polyline.decode = function(str) {
-
+polyline.decode = function(str, precision) {
     var index = 0,
         lat = 0,
         lng = 0,
@@ -32,7 +31,8 @@ polyline.decode = function(str) {
         result = 0,
         byte = null,
         latitude_change,
-        longitude_change;
+        longitude_change,
+        factor = Math.pow(10, -(precision || 5));
 
     // Coordinates have variable length when encoded, so just keep
     // track of whether we've hit the end of the string. In each
@@ -65,23 +65,22 @@ polyline.decode = function(str) {
         lat += latitude_change;
         lng += longitude_change;
 
-        var precision = Math.pow(10, -5);
-
-        coordinates.push([lat * precision, lng * precision]);
+        coordinates.push([lat * factor, lng * factor]);
     }
 
     return coordinates;
 };
 
-polyline.encode = function(coordinates) {
+polyline.encode = function(coordinates, precision) {
     if (!coordinates.length) return '';
 
-    var output = encode(coordinates[0][0]) + encode(coordinates[0][1]);
+    var factor = Math.pow(10, precision || 5),
+        output = encode(coordinates[0][0], factor) + encode(coordinates[0][1], factor);
 
     for (var i = 1; i < coordinates.length; i++) {
         var a = coordinates[i], b = coordinates[i - 1];
-        output += encode(a[0] - b[0]);
-        output += encode(a[1] - b[1]);
+        output += encode(a[0] - b[0], factor);
+        output += encode(a[1] - b[1], factor);
     }
 
     return output;

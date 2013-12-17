@@ -4,25 +4,17 @@ var assert = require('assert'),
 describe('polyline', function() {
     var example = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]];
 
-    function compare(coords, against) {
-        function a(x) { return Math.round(x * 100) / 100; }
-        coords.forEach(function(c, i) {
-            assert.equal(a(c[0]), a(against[i][0]));
-            assert.equal(a(c[1]), a(against[i][1]));
-        });
-    }
-
     describe('#decode()', function() {
         it('decodes an empty Array', function() {
             assert.deepEqual(polyline.decode(''), []);
         });
 
         it('decodes a String into an Array of lat/lon pairs', function() {
-            compare(polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@'), example);
+            assert.deepEqual(polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@'), example);
         });
 
         it('decodes with a custom precision', function() {
-            compare(polyline.decode('_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI', 6), example);
+            assert.deepEqual(polyline.decode('_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI', 6), example);
         });
     });
 

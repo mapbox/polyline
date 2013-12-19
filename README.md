@@ -7,6 +7,22 @@ implementation in Javascript. Compatible with nodejs (`npm install polyline` and
 
 Encodes/decodes into lat/lng coordinate pairs. Flip the pairs to be compatible with GeoJSON.
 
+## Installation
+
+    npm install polyline
+
+## Example
+
+```js
+var polyline = require('polyline');
+
+// returns an array of lat, lon pairs
+polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@')
+
+// returns a string-encoded polyline
+polyline.encode([[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]]);
+```
+
 # [Documentation](https://github.com/mapbox/polyline/blob/master/API.md)
 
 ## See Also

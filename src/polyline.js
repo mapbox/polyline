@@ -86,4 +86,4 @@ polyline.encode = function(coordinates, precision) {
     return output;
 };
 
-if (typeof module !== undefined) module.exports = polyline;
+if (typeof module === 'object' && module.exports) module.exports = polyline;

@@ -1,0 +1,30 @@
+{
+  "name": "polyline",
+  "main": "src/polyline.js",
+  "version": "0.0.4",
+  "homepage": "http://github.com/mapbox/polyline",
+  "authors": [
+    "Tom MacWright <tom@macwright.org> (http://macwright.org/)"
+  ],
+  "description": "Polyline encoding and decoding",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "polyline",
+    "google",
+    "maps",
+    "encode",
+    "decode"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

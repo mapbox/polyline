@@ -30,7 +30,7 @@ polyline.encodeFromLatLng([ LatLng1, LatLng2, ... ])
 
 ```
 
-# [Documentation](https://github.com/mapbox/polyline/blob/master/API.md)
+# [Documentation](API.md)
 
 ## See Also
 

@@ -10,6 +10,8 @@ Encodes/decodes into lat/lng coordinate pairs. Flip the pairs to be compatible w
 ## Installation
 
     npm install polyline
+    
+    bower install polyline
 
 ## Example
 
@@ -21,9 +23,16 @@ polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@')
 
 // returns a string-encoded polyline
 polyline.encode([[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]]);
+
+// returns am array of LatLng object
+polyline.decodeToLatLng('_p~iF~ps|U_ulLnnqC_mqNvxq`@')
+
+// returns a string-encoded polyline
+polyline.encodeFromLatLng([ LatLng1, LatLng2, ... ])
+
 ```
 
-# [Documentation](https://github.com/mapbox/polyline/blob/master/API.md)
+# [Documentation](API.md)
 
 ## See Also
 

@@ -10,6 +10,8 @@ Encodes/decodes into lat/lng coordinate pairs. Flip the pairs to be compatible w
 ## Installation
 
     npm install polyline
+    
+    bower install polyline
 
 ## Example
 

@@ -2,7 +2,9 @@ var assert = require('assert'),
     polyline = require('../');
 
 describe('polyline', function() {
-    var example = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]];
+    var example = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]],
+        // encoded value will enclude slashes -> tests escaping
+        example_slashes = [[35.6,-82.55], [35.59985, -82.55015], [35.6,-82.55]];
 
     describe('#decode()', function() {
         it('decodes an empty Array', function() {
@@ -16,6 +18,16 @@ describe('polyline', function() {
         it('decodes with a custom precision', function() {
             assert.deepEqual(polyline.decode('_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI', 6), example);
         });
+    });
+
+    describe("#identity", function() {
+      it('feed encode into decode and check if the result is the same as the input', function() {
+        assert.deepEqual(polyline.decode(polyline.encode(example_slashes)), example_slashes);
+      });
+
+      it('feed decode into encode and check if the result is the same as the input', function() {
+        assert.equal(polyline.encode(polyline.decode("_chxEn`zvN\\\\]]")), "_chxEn`zvN\\\\]]");
+      });
     });
 
     describe('#encode()', function() {

@@ -29,4 +29,4 @@ polyline.encode([[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]]);
 
 * [polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
 * [Mark McClure's Google Maps Project](http://facstaff.unca.edu/mcmcclur/GoogleMaps.html)
-* [Routing geometry decoder in project-osrm](https://github.com/DennisOSRM/Project-OSRM-Web/blob/master/WebContent/routing/OSRM.RoutingGeometry.js)
+* [Routing geometry decoder in project-osrm](https://github.com/Project-OSRM/osrm-frontend/blob/master/WebContent/routing/OSRM.RoutingGeometry.js)

@@ -1,15 +1,26 @@
 [![Build Status](https://secure.travis-ci.org/mapbox/polyline.png?branch=master)](http://travis-ci.org/mapbox/polyline)
+[![npm version](https://badge.fury.io/js/polyline.svg)](http://badge.fury.io/js/polyline)
 
 # polyline
 
 A simple [google-esque polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
-implementation in Javascript. Compatible with nodejs (`npm install polyline` and the browser (copy `src/polyline.js`)).
+implementation in Javascript. Compatible with node.js and the browser.
 
 Encodes/decodes into lat/lng coordinate pairs. Flip the pairs to be compatible with GeoJSON.
 
 ## Installation
 
+Via npm
+
     npm install polyline
+    
+Via bower
+
+    bower install polyline
+    
+Include file direcly on your page:
+
+    <script src="src/polyline.js"></script>
 
 ## Example
 

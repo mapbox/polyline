@@ -1,3 +1,6 @@
+var turfFlip = require('turf-flip');
+var geojsonCoords = require('geojson-coords');
+
 var polyline = {};
 
 // Based off of [the offical Google document](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
@@ -18,6 +21,10 @@ function encode(coordinate, factor) {
     }
     output += String.fromCharCode(coordinate + 63);
     return output;
+}
+
+function getCoords(geojson) {
+    return geojsonCoords(geojson);
 }
 
 // This is adapted from the implementation in Project-OSRM
@@ -84,6 +91,14 @@ polyline.encode = function(coordinates, precision) {
     }
 
     return output;
+};
+
+polyline.flip = function(input) {
+    
+    var flipped = turfFlip(input);
+
+    return getCoords(flipped);
+
 };
 
 if (typeof module === 'object' && module.exports) module.exports = polyline;

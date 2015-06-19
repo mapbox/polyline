@@ -86,12 +86,16 @@ polyline.encode = function(coordinates, precision) {
     return output;
 };
 
-polyline.flip = function(input) {
-    
-    var flipped = turfFlip(input);
-
-    return getCoords(flipped);
-
+polyline.fromGeoJSON = function(geojson, precision) {
+    if (!(geojson && geojson.geometry && geojson.geometry.type === 'LineString')) {
+        throw new Error('Input must be a GeoJSON LineString');
+    }
+    var coords = geojson.geometry.coordinates;
+    var flipped = [];
+    for (var i = 0; i < coords.length; i++) {
+        flipped.push(coords[i].slice().reverse());
+    }
+    return polyline.encode(flipped, precision);
 };
 
 if (typeof module === 'object' && module.exports) module.exports = polyline;

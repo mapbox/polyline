@@ -16,21 +16,20 @@ Encodes/decodes into lat/lng coordinate pairs. Use `fromGeoJSON()` to encode fro
 ```js
 var polyline = require('polyline');
 
-// returns an array of lat, lon pairs you can pass to polyline.encode()
-polyline.flip({ 
-  "type": "Feature",
-    "properties": {},
-    "geometry": {
-      "type": "Point",
-      "coordinates": [20.566406, 43.421008]
-    }
-  });
-
 // returns an array of lat, lon pairs
 polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@');
 
 // returns a string-encoded polyline
 polyline.encode([[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]]);
+
+// returns a string-encoded polyline from a GeoJSON LineString
+polyline.fromGeoJSON({ "type": "Feature",
+  "geometry": {
+    "type": "LineString",
+    "coordinates": example_flipped
+  },
+  "properties": {}
+});
 ```
 
 # [Documentation](https://github.com/mapbox/polyline/blob/master/API.md)

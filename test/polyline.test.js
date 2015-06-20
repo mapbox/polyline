@@ -58,6 +58,11 @@ describe('polyline', function() {
                 polyline.fromGeoJSON({});
             }, /Input must be a GeoJSON LineString/);
         });
+        console.log(geojson.geometry);
+
+        it('allows geojson geometries', function() {
+            assert.equal(polyline.fromGeoJSON(geojson.geometry), '_p~iF~ps|U_ulLnnqC_mqNvxq`@')
+        })
 
         it('flips coordinates and encodes', function() {
             assert.equal(polyline.fromGeoJSON(geojson), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');

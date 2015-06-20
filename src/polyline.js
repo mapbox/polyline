@@ -87,10 +87,15 @@ polyline.encode = function(coordinates, precision) {
 };
 
 polyline.fromGeoJSON = function(geojson, precision) {
-    if (!(geojson && geojson.geometry && geojson.geometry.type === 'LineString')) {
+    if (!(geojson && geojson.geometry && geojson.geometry.type === 'LineString') && geojson.type != 'LineString') {
         throw new Error('Input must be a GeoJSON LineString');
     }
-    var coords = geojson.geometry.coordinates;
+    var coords;
+    if (geojson.geometry) {
+        coords = geojson.geometry.coordinates;
+    } else {
+        coords = geojson.coordinates;
+    }
     var flipped = [];
     for (var i = 0; i < coords.length; i++) {
         flipped.push(coords[i].slice().reverse());

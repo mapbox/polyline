@@ -86,4 +86,19 @@ polyline.encode = function(coordinates, precision) {
     return output;
 };
 
+polyline.fromGeoJSON = function(geojson, precision) {
+    if (geojson && geojson.type === 'Feature') {
+        geojson = geojson.geometry;
+    }
+    if (!geojson || geojson.type !== 'LineString') {
+        throw new Error('Input must be a GeoJSON LineString');
+    }
+    var coords = geojson.coordinates;
+    var flipped = [];
+    for (var i = 0; i < coords.length; i++) {
+        flipped.push(coords[i].slice().reverse());
+    }
+    return polyline.encode(flipped, precision);
+};
+
 if (typeof module === 'object' && module.exports) module.exports = polyline;

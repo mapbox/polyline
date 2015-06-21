@@ -1,3 +1,5 @@
+'use strict';
+
 var polyline = {};
 
 // Based off of [the offical Google document](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
@@ -72,7 +74,7 @@ polyline.decode = function(str, precision) {
 };
 
 polyline.encode = function(coordinates, precision) {
-    if (!coordinates.length) return '';
+    if (!coordinates.length) { return ''; }
 
     var factor = Math.pow(10, precision || 5),
         output = encode(coordinates[0][0], factor) + encode(coordinates[0][1], factor);
@@ -101,4 +103,6 @@ polyline.fromGeoJSON = function(geojson, precision) {
     return polyline.encode(flipped, precision);
 };
 
-if (typeof module === 'object' && module.exports) module.exports = polyline;
+if (typeof module === 'object' && module.exports) {
+    module.exports = polyline;
+}

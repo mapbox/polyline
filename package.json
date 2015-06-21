@@ -9,19 +9,15 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "jshint": "2.3.0",
-    "mocha": "1.2.x"
+    "eslint": "^0.23.0",
+    "tap": "^1.2.1"
   },
   "optionalDependencies": {},
   "scripts": {
-    "test": "jshint src && mocha -R spec"
+    "test": "eslint src && tap --coverage test/polyline.test.js"
   },
   "main": "src/polyline.js",
   "engines": {
     "node": "*"
-  },
-  "jshintConfig": {
-    "undef": true,
-    "node": true
   }
 }

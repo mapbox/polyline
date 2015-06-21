@@ -1,71 +1,94 @@
-var assert = require('assert'),
+'use strict';
+
+var test = require('tap').test,
     polyline = require('../');
 
-describe('polyline', function() {
+test('polyline', function(t) {
     var example = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]],
         // encoded value will enclude slashes -> tests escaping
-        example_slashes = [[35.6,-82.55], [35.59985, -82.55015], [35.6,-82.55]],
+        example_slashes = [[35.6, -82.55], [35.59985, -82.55015], [35.6, -82.55]],
         example_flipped = [[-120.2, 38.5], [-120.95, 40.7], [-126.453, 43.252]];
-        geojson = { "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": example_flipped
-            },
-            "properties": {}
-        }
 
-    describe('#decode()', function() {
-        it('decodes an empty Array', function() {
-            assert.deepEqual(polyline.decode(''), []);
+    var geojson = { 'type': 'Feature',
+        'geometry': {
+            'type': 'LineString',
+            'coordinates': example_flipped
+        },
+        'properties': {}
+    };
+
+    t.test('#decode()', function(t) {
+        t.test('decodes an empty Array', function(t) {
+            t.deepEqual(polyline.decode(''), []);
+            t.end();
         });
 
-        it('decodes a String into an Array of lat/lon pairs', function() {
-            assert.deepEqual(polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@'), example);
+        t.test('decodes a String into an Array of lat/lon pairs', function(t) {
+            t.deepEqual(polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@'), example);
+            t.end();
         });
 
-        it('decodes with a custom precision', function() {
-            assert.deepEqual(polyline.decode('_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI', 6), example);
+        t.test('decodes with a custom precision', function(t) {
+            t.deepEqual(polyline.decode('_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI', 6), example);
+            t.end();
         });
+
+        t.end();
     });
 
-    describe("#identity", function() {
-      it('feed encode into decode and check if the result is the same as the input', function() {
-        assert.deepEqual(polyline.decode(polyline.encode(example_slashes)), example_slashes);
-      });
+    t.test('#identity', function(t) {
+        t.test('feed encode into decode and check if the result is the same as the input', function(t) {
+            t.deepEqual(polyline.decode(polyline.encode(example_slashes)), example_slashes);
+            t.end();
+        });
 
-      it('feed decode into encode and check if the result is the same as the input', function() {
-        assert.equal(polyline.encode(polyline.decode("_chxEn`zvN\\\\]]")), "_chxEn`zvN\\\\]]");
-      });
+        t.test('feed decode into encode and check if the result is the same as the input', function(t) {
+            t.equal(polyline.encode(polyline.decode('_chxEn`zvN\\\\]]')), '_chxEn`zvN\\\\]]');
+            t.end();
+        });
+
+        t.end();
     });
 
-    describe('#encode()', function() {
-        it('encodes an empty Array', function() {
-            assert.equal(polyline.encode([]), '');
+    t.test('#encode()', function(t) {
+        t.test('encodes an empty Array', function(t) {
+            t.equal(polyline.encode([]), '');
+            t.end();
         });
 
-        it('encodes an Array of lat/lon pairs into a String', function() {
-            assert.equal(polyline.encode(example), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+        t.test('encodes an Array of lat/lon pairs into a String', function(t) {
+            t.equal(polyline.encode(example), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+            t.end();
         });
 
-        it('encodes with a custom precision', function() {
-            assert.equal(polyline.encode(example, 6), '_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI');
+        t.test('encodes with a custom precision', function(t) {
+            t.equal(polyline.encode(example, 6), '_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI');
+            t.end();
         });
+
+        t.end();
     });
 
-    describe('#fromGeoJSON()', function() {
-        it('throws for non linestrings', function() {
-            assert.throws(function() {
+    t.test('#fromGeoJSON()', function(t) {
+        t.test('throws for non linestrings', function(t) {
+            t.throws(function() {
                 polyline.fromGeoJSON({});
             }, /Input must be a GeoJSON LineString/);
+            t.end();
         });
 
-        it('allows geojson geometries', function() {
-            assert.equal(polyline.fromGeoJSON(geojson.geometry), '_p~iF~ps|U_ulLnnqC_mqNvxq`@')
-        })
-
-        it('flips coordinates and encodes', function() {
-            assert.equal(polyline.fromGeoJSON(geojson), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+        t.test('allows geojson geometries', function(t) {
+            t.equal(polyline.fromGeoJSON(geojson.geometry), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+            t.end();
         });
+
+        t.test('flips coordinates and encodes', function(t) {
+            t.equal(polyline.fromGeoJSON(geojson), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+            t.end();
+        });
+
+        t.end();
     });
 
+    t.end();
 });

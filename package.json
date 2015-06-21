@@ -14,7 +14,7 @@
   },
   "optionalDependencies": {},
   "scripts": {
-    "test": "eslint src && tap --coverage test/polyline.test.js"
+    "test": "eslint --no-eslintrc -c .eslintrc src && tap --coverage test/polyline.test.js"
   },
   "main": "src/polyline.js",
   "engines": {

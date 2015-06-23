@@ -26,7 +26,7 @@ polyline.encode([[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]]);
 polyline.fromGeoJSON({ "type": "Feature",
   "geometry": {
     "type": "LineString",
-    "coordinates": example_flipped
+    "coordinates": [[-120.2, 38.5], [-120.95, 40.7], [-126.453, 43.252]]
   },
   "properties": {}
 });

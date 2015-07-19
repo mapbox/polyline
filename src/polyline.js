@@ -23,7 +23,7 @@ function encode(coordinate, factor) {
 }
 
 // This is adapted from the implementation in Project-OSRM
-// https://github.com/DennisOSRM/Project-OSRM-Web/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
+// https://github.com/Project-OSRM/osrm-frontend/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
 polyline.decode = function(str, precision) {
     var index = 0,
         lat = 0,

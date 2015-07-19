@@ -122,12 +122,7 @@ polyline.fromGeoJSON = function(geojson, precision) {
     if (!geojson || geojson.type !== 'LineString') {
         throw new Error('Input must be a GeoJSON LineString');
     }
-    var coords = geojson.coordinates;
-    var flipped = [];
-    for (var i = 0; i < coords.length; i++) {
-        flipped.push(coords[i].slice().reverse());
-    }
-    return polyline.encode(flipped, precision);
+    return polyline.encode(flipped(geojson.coordinates), precision);
 };
 
 /**
@@ -139,16 +134,19 @@ polyline.fromGeoJSON = function(geojson, precision) {
  */
 polyline.toGeoJSON = function(str, precision) {
     var coords = polyline.decode(str, precision);
+    return {
+        type: 'LineString',
+        coordinates: flipped(coords)
+    };
+};
+
+function flipped(coords) {
     var flipped = [];
     for (var i = 0; i < coords.length; i++) {
         flipped.push(coords[i].slice().reverse());
     }
-
-    return {
-        type: 'LineString',
-        coordinates: flipped
-    };
-};
+    return flipped;
+}
 
 if (typeof module === 'object' && module.exports) {
     module.exports = polyline;

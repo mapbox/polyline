@@ -130,6 +130,26 @@ polyline.fromGeoJSON = function(geojson, precision) {
     return polyline.encode(flipped, precision);
 };
 
+/**
+ * Decodes to a GeoJSON LineString geometry.
+ *
+ * @param {String} str
+ * @param {Number} precision
+ * @returns {Object}
+ */
+polyline.toGeoJSON = function(str, precision) {
+    var coords = polyline.decode(str, precision);
+    var flipped = [];
+    for (var i = 0; i < coords.length; i++) {
+        flipped.push(coords[i].slice().reverse());
+    }
+
+    return {
+        type: 'LineString',
+        coordinates: flipped
+    };
+};
+
 if (typeof module === 'object' && module.exports) {
     module.exports = polyline;
 }

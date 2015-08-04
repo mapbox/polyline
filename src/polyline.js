@@ -108,6 +108,14 @@ polyline.encode = function(coordinates, precision) {
     return output;
 };
 
+function flipped(coords) {
+    var flipped = [];
+    for (var i = 0; i < coords.length; i++) {
+        flipped.push(coords[i].slice().reverse());
+    }
+    return flipped;
+}
+
 /**
  * Encodes a GeoJSON LineString feature/geometry.
  *
@@ -139,14 +147,6 @@ polyline.toGeoJSON = function(str, precision) {
         coordinates: flipped(coords)
     };
 };
-
-function flipped(coords) {
-    var flipped = [];
-    for (var i = 0; i < coords.length; i++) {
-        flipped.push(coords[i].slice().reverse());
-    }
-    return flipped;
-}
 
 if (typeof module === 'object' && module.exports) {
     module.exports = polyline;

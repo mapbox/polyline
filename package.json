@@ -2,7 +2,7 @@
   "author": "Tom MacWright <tom@macwright.org> (http://macwright.org/)",
   "name": "polyline",
   "description": "Polyline encoding and decoding",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/mapbox/polyline.git"

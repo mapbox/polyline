@@ -90,5 +90,14 @@ test('polyline', function(t) {
         t.end();
     });
 
+    t.test('#toGeoJSON()', function(t) {
+        t.test('flips coordinates and decodes geometry', function(t) {
+            t.deepEqual(polyline.toGeoJSON('_p~iF~ps|U_ulLnnqC_mqNvxq`@'), geojson.geometry);
+            t.end();
+        });
+
+        t.end();
+    });
+
     t.end();
 });

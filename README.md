@@ -32,6 +32,18 @@ polyline.fromGeoJSON({ "type": "Feature",
 });
 ```
 
+## Command line
+
+Install globally or run `./node_modules/.bin/polyline`.
+
+Send input via stdin and use `--decode`, `--encode`, or `--fromGeoJSON` flags. If omitted will default to `--decode`.
+
+Example :
+
+```
+cat file.json | ./bin/polyline.bin.js --fromGeoJSON > result.txt
+```
+
 # [Documentation](https://github.com/mapbox/polyline/blob/master/API.md)
 
 ## See Also

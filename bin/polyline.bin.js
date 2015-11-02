@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-var process = require('process');
 var polyline = require('../');
 
 var HELP = 'Provide data from stdin and use with --decode (default), --encode, or --fromGeoJSON\n';

@@ -19,5 +19,8 @@
   "main": "src/polyline.js",
   "engines": {
     "node": "*"
+  },
+  "bin": {
+    "polyline": "bin/polyline.bin.js"
   }
 }

@@ -66,6 +66,12 @@ test('polyline', function(t) {
             t.end();
         });
 
+        t.test('encodes negative values correctly', function(t) {
+            t.ok(polyline.decode(polyline.encode([[-107.3741825, 0]], 7), 7)[0][0] < 0);
+            t.end();
+        });
+
+
         t.end();
     });
 

@@ -11,10 +11,10 @@
 
 var polyline = {};
 
-function encode(coordinate, factor) {
-    coordinate = Math.round(coordinate * factor);
+function encode(coord, factor) {
+    var coordinate = Math.round(coord * factor);
     coordinate <<= 1;
-    if (coordinate < 0) {
+    if (coord < 0) {
         coordinate = ~coordinate;
     }
     var output = '';

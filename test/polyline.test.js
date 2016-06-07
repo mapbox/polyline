@@ -7,7 +7,8 @@ test('polyline', function(t) {
     var example = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]],
         // encoded value will enclude slashes -> tests escaping
         example_slashes = [[35.6, -82.55], [35.59985, -82.55015], [35.6, -82.55]],
-        example_flipped = [[-120.2, 38.5], [-120.95, 40.7], [-126.453, 43.252]];
+        example_flipped = [[-120.2, 38.5], [-120.95, 40.7], [-126.453, 43.252]],
+        example_rounding = [[0, 0.000006], [0, 0.000002]];
 
     var geojson = { 'type': 'Feature',
         'geometry': {
@@ -58,6 +59,11 @@ test('polyline', function(t) {
 
         t.test('encodes an Array of lat/lon pairs into a String', function(t) {
             t.equal(polyline.encode(example), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+            t.end();
+        });
+
+        t.test('encodes with proper rounding', function(t) {
+            t.equal(polyline.encode(example_rounding), '?A?@');
             t.end();
         });
 

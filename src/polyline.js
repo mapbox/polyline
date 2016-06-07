@@ -11,10 +11,12 @@
 
 var polyline = {};
 
-function encode(coord, factor) {
-    var coordinate = Math.round(coord * factor);
+function encode(current, previous, factor) {
+	current = Math.round(current * factor);
+	previous = Math.round(previous * factor);
+    var coordinate = current - previous;
     coordinate <<= 1;
-    if (coord < 0) {
+    if (current - previous < 0) {
         coordinate = ~coordinate;
     }
     var output = '';
@@ -97,12 +99,12 @@ polyline.encode = function(coordinates, precision) {
     if (!coordinates.length) { return ''; }
 
     var factor = Math.pow(10, precision || 5),
-        output = encode(coordinates[0][0], factor) + encode(coordinates[0][1], factor);
+        output = encode(coordinates[0][0], 0, factor) + encode(coordinates[0][1], 0, factor);
 
     for (var i = 1; i < coordinates.length; i++) {
         var a = coordinates[i], b = coordinates[i - 1];
-        output += encode(a[0] - b[0], factor);
-        output += encode(a[1] - b[1], factor);
+        output += encode(a[0], b[0], factor);
+        output += encode(a[1], b[1], factor);
     }
 
     return output;

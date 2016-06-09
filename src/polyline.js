@@ -12,8 +12,8 @@
 var polyline = {};
 
 function encode(current, previous, factor) {
-	current = Math.round(current * factor);
-	previous = Math.round(previous * factor);
+    current = Math.round(current * factor);
+    previous = Math.round(previous * factor);
     var coordinate = current - previous;
     coordinate <<= 1;
     if (current - previous < 0) {

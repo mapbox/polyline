@@ -11,9 +11,14 @@
 
 var polyline = {};
 
+function py2_round(value) {
+    // Google's polyline algorithm uses the same rounding strategy as Python 2, which is different from JS for negative values
+    return Math.floor(Math.abs(value) + 0.5) * Math.sign(value);
+}
+
 function encode(current, previous, factor) {
-    current = Math.round(current * factor);
-    previous = Math.round(previous * factor);
+    current = py2_round(current * factor);
+    previous = py2_round(previous * factor);
     var coordinate = current - previous;
     coordinate <<= 1;
     if (current - previous < 0) {

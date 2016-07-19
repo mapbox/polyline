@@ -8,7 +8,8 @@ test('polyline', function(t) {
         // encoded value will enclude slashes -> tests escaping
         example_slashes = [[35.6, -82.55], [35.59985, -82.55015], [35.6, -82.55]],
         example_flipped = [[-120.2, 38.5], [-120.95, 40.7], [-126.453, 43.252]],
-        example_rounding = [[0, 0.000006], [0, 0.000002]];
+        example_rounding = [[0, 0.000006], [0, 0.000002]],
+        example_rounding_negative = [[36.05322, -112.084004], [36.053573, -112.083914], [36.053845, -112.083965]];
 
     var geojson = { 'type': 'Feature',
         'geometry': {
@@ -64,6 +65,11 @@ test('polyline', function(t) {
 
         t.test('encodes with proper rounding', function(t) {
             t.equal(polyline.encode(example_rounding), '?A?@');
+            t.end();
+        });
+
+        t.test('encodes with proper negative rounding', function(t) {
+            t.equal(polyline.encode(example_rounding_negative), 'ss`{E~kbkTeAQw@J');
             t.end();
         });
 

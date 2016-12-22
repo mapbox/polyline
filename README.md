@@ -9,12 +9,12 @@ Encodes/decodes into lat/lng coordinate pairs. Use `fromGeoJSON()` to encode fro
 
 ## Installation
 
-    npm install polyline
+    npm install @mapbox/polyline
 
 ## Example
 
 ```js
-var polyline = require('polyline');
+var polyline = require('@mapbox/polyline');
 
 // returns an array of lat, lon pairs
 polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@');

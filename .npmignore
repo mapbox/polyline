@@ -1,0 +1,9 @@
+node_modules
+.nyc_output/
+.gitignore
+test/
+*.yml
+CHANGELOG.md
+API.md
+Makefile
+.eslintrc

@@ -10,6 +10,8 @@ Encodes/decodes into lat/lng coordinate pairs. Use `fromGeoJSON()` to encode fro
 ## Installation
 
     npm install @mapbox/polyline
+    
+Note that the old package `polyline` has been deprecated in favor of `@mapbox/polyline` (the old package remain but won't receive updates).
 
 ## Example
 
@@ -32,6 +34,8 @@ polyline.fromGeoJSON({ "type": "Feature",
 });
 ```
 
+[API Documentation](https://github.com/mapbox/polyline/blob/master/API.md)
+
 ## Command line
 
 Install globally or run `./node_modules/.bin/polyline`.
@@ -43,11 +47,3 @@ Example :
 ```
 cat file.json | ./bin/polyline.bin.js --fromGeoJSON > result.txt
 ```
-
-# [Documentation](https://github.com/mapbox/polyline/blob/master/API.md)
-
-## See Also
-
-* [polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
-* [Mark McClure's Google Maps Project](http://facstaff.unca.edu/mcmcclur/GoogleMaps.html)
-* [Routing geometry decoder in project-osrm](https://github.com/Project-OSRM/osrm-frontend/blob/master/WebContent/routing/OSRM.RoutingGeometry.js)

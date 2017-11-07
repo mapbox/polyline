@@ -16,7 +16,8 @@
   "scripts": {
     "test": "eslint --no-eslintrc -c .eslintrc src && tap --coverage test/polyline.test.js"
   },
-  "main": "src/polyline.js",
+  "main": "src/polyline",
+  "typings": "src/polyline.d.ts",
   "engines": {
     "node": "*"
   },

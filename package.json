@@ -9,8 +9,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "eslint": "^0.23.0",
-    "tap": "^1.2.1"
+    "eslint": "^4.19.1",
+    "tap": "^11.1.3"
   },
   "optionalDependencies": {},
   "scripts": {

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0 (2018-04-01)
+
+* Added `--toGeoJSON` command line option.
+
 ## 0.2.0 (2016-07-19)
 
 * Fix issue with negative rounding.

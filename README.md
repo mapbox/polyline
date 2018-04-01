@@ -5,7 +5,8 @@
 A simple [google-esque polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
 implementation in Javascript. Compatible with nodejs (`npm install @mapbox/polyline` and the browser (copy `src/polyline.js`)).
 
-Encodes/decodes into lat/lng coordinate pairs. Use `fromGeoJSON()` to encode from GeoJSON objects.
+Encodes/decodes into [lat, lng] coordinate pairs. Use `fromGeoJSON()` to encode from GeoJSON objects, or `toGeoJSON` to
+decode to a GeoJSON LineString.
 
 ## Installation
 
@@ -36,7 +37,7 @@ polyline.fromGeoJSON({ "type": "Feature",
 
 Install globally or run `./node_modules/.bin/polyline`.
 
-Send input via stdin and use `--decode`, `--encode`, or `--fromGeoJSON` flags. If omitted will default to `--decode`.
+Send input via stdin and use `--decode`, `--encode`, `--toGeoJSON`, or `--fromGeoJSON` flags. If omitted will default to `--decode`.
 
 Example :
 

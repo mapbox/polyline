@@ -2,7 +2,7 @@
 
 var polyline = require('../');
 
-var HELP = 'Provide data from stdin and use with --decode (default), --encode, or --fromGeoJSON\n';
+var HELP = 'Provide data from stdin and use with --decode (default), --encode, --toGeoJSON, or --fromGeoJSON\n';
 
 var mode = process.argv[2] || '--decode';
 var rawInput = '';
@@ -34,6 +34,8 @@ function convert(rawString, mode) {
       return polyline.decode(rawString);
     case '--encode' :
       return polyline.encode(rawString);
+    case '--toGeoJSON':
+      return polyline.toGeoJSON(rawString);
     case '--fromGeoJSON' :
       return polyline.fromGeoJSON(JSON.parse(rawString));
   }

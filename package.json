@@ -22,5 +22,6 @@
   },
   "bin": {
     "polyline": "bin/polyline.bin.js"
-  }
+  },
+  "typings": "./index.d.ts"
 }

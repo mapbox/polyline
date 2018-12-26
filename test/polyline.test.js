@@ -11,13 +11,21 @@ test('polyline', function(t) {
         example_rounding = [[0, 0.000006], [0, 0.000002]],
         example_rounding_negative = [[36.05322, -112.084004], [36.053573, -112.083914], [36.053845, -112.083965]];
 
-    var geojson = { 'type': 'Feature',
-        'geometry': {
-            'type': 'LineString',
-            'coordinates': example_flipped
+    var geojsonLineString = { 'type': 'Feature',
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': example_flipped
+            },
+            'properties': {}
         },
-        'properties': {}
-    };
+        geojsonPoint = {
+            'type': 'Point',
+            'coordinates': example_flipped[0]
+        },
+        geojsonPolygon = {
+            'type': 'Polygon',
+            'coordinates': [[[-120.2, 38.5], [-120.95, 40.7], [-126.453, 43.252], [-120.2, 38.5]]]
+        };
 
     t.test('#decode()', function(t) {
         t.test('decodes an empty Array', function(t) {
@@ -88,20 +96,37 @@ test('polyline', function(t) {
     });
 
     t.test('#fromGeoJSON()', function(t) {
-        t.test('throws for non linestrings', function(t) {
+        t.test('throws for empty geojson', function(t) {
             t.throws(function() {
-                polyline.fromGeoJSON({});
-            }, /Input must be a GeoJSON LineString/);
+                polyline.fromGeoJSON();
+            }, /Input must be a valid GeoJSON/);
             t.end();
         });
 
-        t.test('allows geojson geometries', function(t) {
-            t.equal(polyline.fromGeoJSON(geojson.geometry), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+        t.test('throws for unsupported geometry type', function(t) {
+            t.throws(function() {
+                polyline.fromGeoJSON({ type: 'MultiPolygon' });
+            }, /Input must be a GeoJSON Point, LineString or Polygon/);
             t.end();
         });
 
-        t.test('flips coordinates and encodes', function(t) {
-            t.equal(polyline.fromGeoJSON(geojson), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+        t.test('allows geojson linestring', function(t) {
+            t.equal(polyline.fromGeoJSON(geojsonLineString.geometry), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+            t.end();
+        });
+
+        t.test('flips linestring coordinates and encodes', function(t) {
+            t.equal(polyline.fromGeoJSON(geojsonLineString), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+            t.end();
+        });
+
+        t.test('flips point coordinate end encodes', function(t) {
+            t.equal(polyline.fromGeoJSON(geojsonPoint), '_p~iF~ps|U');
+            t.end();
+        });
+
+        t.test('flips polygon coordinates end encodes', function(t) {
+            t.equal(polyline.fromGeoJSON(geojsonPolygon), '_p~iF~ps|U_ulLnnqC_mqNvxq`@~b_\\ghde@');
             t.end();
         });
 
@@ -109,8 +134,13 @@ test('polyline', function(t) {
     });
 
     t.test('#toGeoJSON()', function(t) {
-        t.test('flips coordinates and decodes geometry', function(t) {
-            t.deepEqual(polyline.toGeoJSON('_p~iF~ps|U_ulLnnqC_mqNvxq`@'), geojson.geometry);
+        t.test('flips linestring coordinates and decodes geometry', function(t) {
+            t.deepEqual(polyline.toGeoJSON('_p~iF~ps|U_ulLnnqC_mqNvxq`@'), geojsonLineString.geometry);
+            t.end();
+        });
+
+        t.test('flips point coordinate and decodes geometry', function(t) {
+            t.deepEqual(polyline.toGeoJSON('_p~iF~ps|U'), geojsonPoint);
             t.end();
         });
 

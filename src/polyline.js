@@ -124,7 +124,7 @@ function flipped(coords) {
 }
 
 /**
- * Encodes a GeoJSON LineString feature/geometry.
+ * Encodes a GeoJSON Point, LineString, or Polygon (ignoring holes) feature/geometry.
  *
  * @param {Object} geojson
  * @param {Number} precision
@@ -134,14 +134,28 @@ polyline.fromGeoJSON = function(geojson, precision) {
     if (geojson && geojson.type === 'Feature') {
         geojson = geojson.geometry;
     }
-    if (!geojson || geojson.type !== 'LineString') {
-        throw new Error('Input must be a GeoJSON LineString');
+
+    if (!geojson) {
+        throw new Error('Input must be a valid GeoJSON');
     }
-    return polyline.encode(flipped(geojson.coordinates), precision);
+
+    var coords;
+    if (geojson.type === 'Point') {
+        coords = [geojson.coordinates];
+    } else if (geojson.type === 'LineString') {
+        coords = geojson.coordinates;
+    } else if (geojson.type === 'Polygon') {
+        // Any holes (coords index > 0) will be ignored
+        coords = geojson.coordinates[0];
+    } else {
+        throw new Error('Input must be a GeoJSON Point, LineString or Polygon');
+    }
+
+    return polyline.encode(flipped(coords), precision);
 };
 
 /**
- * Decodes to a GeoJSON LineString geometry.
+ * Decodes to a GeoJSON Point or LineString geometry.
  *
  * @param {String} str
  * @param {Number} precision
@@ -149,6 +163,12 @@ polyline.fromGeoJSON = function(geojson, precision) {
  */
 polyline.toGeoJSON = function(str, precision) {
     var coords = polyline.decode(str, precision);
+    if (coords && coords.length == 1) {
+        return {
+            type: 'Point',
+            coordinates: flipped(coords)[0]
+        };
+    }
     return {
         type: 'LineString',
         coordinates: flipped(coords)

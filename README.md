@@ -6,12 +6,12 @@ A simple [google-esque polyline](https://developers.google.com/maps/documentatio
 implementation in Javascript. Compatible with nodejs (`npm install @mapbox/polyline` and the browser (copy `src/polyline.js`)).
 
 Encodes/decodes into [lat, lng] coordinate pairs. Use `fromGeoJSON()` to encode from GeoJSON objects, or `toGeoJSON` to
-decode to a GeoJSON LineString.
+decode to a GeoJSON Point, LineString, or Polygon (holes not supported).
 
 ## Installation
 
     npm install @mapbox/polyline
-    
+
 Note that the old package `polyline` has been deprecated in favor of `@mapbox/polyline` (the old package remain but won't receive updates).
 
 ## Example

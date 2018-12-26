@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2018-12-26)
+
+* Added `Point` and `Polygon` GeoJSON geometry types support.
+
 ## 1.0.0 (2018-04-01)
 
 * Added `--toGeoJSON` command line option.

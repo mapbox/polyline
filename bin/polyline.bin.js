@@ -1,43 +1,53 @@
 #!/usr/bin/env node
 
-var polyline = require('../');
+const polyline = require('../');
 
-var HELP = 'Provide data from stdin and use with --decode (default), --encode, --toGeoJSON, or --fromGeoJSON\n';
+const HELP = 'Provide data from stdin and use with --decode (default), --encode, --toGeoJSON, or --fromGeoJSON. Optionally provide a precision with --precision=6\n';
 
-var mode = process.argv[2] || '--decode';
-var rawInput = '';
+let precision = 5;
+let rawInput = '';
+const mode = process.argv[2] || '--decode';
+
+if (process.argv[3]) {
+  if (process.argv[3].startsWith('-p=')) {
+    precision = parseInt(process.argv[3].split('-p=').pop(), 10);
+  }
+  if (process.argv[3].startsWith('--precision=')) {
+    precision = parseInt(process.argv[3].split('--precision=').pop(), 10);
+  }
+}
+
+if (mode === '--help' || mode === '-h') {
+  exit();
+}
 
 process.stdin.setEncoding('utf8');
 
 process.stdin.on('readable', function() {
-  var chunk = process.stdin.read();
+  const chunk = process.stdin.read();
   if (chunk !== null) {
     rawInput += chunk;
   }
 });
 
 process.stdin.on('end', function() {
-  if (mode === '--help' || mode === '-h') {
+  const converted = convert(rawInput, mode);
+  if (!converted) {
     exit();
-  } else {
-    var converted = convert(rawInput, mode);
-    if (!converted) {
-      exit();
-    }
-    process.stdout.write(JSON.stringify(converted));
   }
+  process.stdout.write(JSON.stringify(converted));
 });
 
 function convert(rawString, mode) {
   switch(mode) {
     case '--decode' :
-      return polyline.decode(rawString);
+      return polyline.decode(rawString, precision);
     case '--encode' :
-      return polyline.encode(rawString);
+      return polyline.encode(rawString, precision);
     case '--toGeoJSON':
-      return polyline.toGeoJSON(rawString);
+      return polyline.toGeoJSON(rawString, precision);
     case '--fromGeoJSON' :
-      return polyline.fromGeoJSON(JSON.parse(rawString));
+      return polyline.fromGeoJSON(JSON.parse(rawString), precision);
   }
 }
 

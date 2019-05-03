@@ -5,6 +5,7 @@ var test = require('tap').test,
 
 test('polyline', function(t) {
     var example = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]],
+        example_zero = [[39, -120], [41, -121], [43, -126]],
         // encoded value will enclude slashes -> tests escaping
         example_slashes = [[35.6, -82.55], [35.59985, -82.55015], [35.6, -82.55]],
         example_flipped = [[-120.2, 38.5], [-120.95, 40.7], [-126.453, 43.252]],
@@ -32,6 +33,11 @@ test('polyline', function(t) {
 
         t.test('decodes with a custom precision', function(t) {
             t.deepEqual(polyline.decode('_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI', 6), example);
+            t.end();
+        });
+
+        t.test('decodes with precision 0', function(t) {
+            t.deepEqual(polyline.decode('mAnFC@CH', 0), example_zero);
             t.end();
         });
 
@@ -75,6 +81,11 @@ test('polyline', function(t) {
 
         t.test('encodes with a custom precision', function(t) {
             t.equal(polyline.encode(example, 6), '_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI');
+            t.end();
+        });
+
+        t.test('encodes with precision 0', function(t) {
+            t.equal(polyline.encode(example, 0), 'mAnFC@CH');
             t.end();
         });
 

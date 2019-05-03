@@ -54,7 +54,7 @@ polyline.decode = function(str, precision) {
         byte = null,
         latitude_change,
         longitude_change,
-        factor = Math.pow(10, precision || 5);
+        factor = Math.pow(10, Number.isInteger(precision) ? precision : 5);
 
     // Coordinates have variable length when encoded, so just keep
     // track of whether we've hit the end of the string. In each
@@ -103,7 +103,7 @@ polyline.decode = function(str, precision) {
 polyline.encode = function(coordinates, precision) {
     if (!coordinates.length) { return ''; }
 
-    var factor = Math.pow(10, precision || 5),
+    var factor = Math.pow(10, Number.isInteger(precision) ? precision : 5),
         output = encode(coordinates[0][0], 0, factor) + encode(coordinates[0][1], 0, factor);
 
     for (var i = 1; i < coordinates.length; i++) {

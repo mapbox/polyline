@@ -1,13 +1,15 @@
 {
-  "author": "Tom MacWright <tom@macwright.org> (http://macwright.org/)",
   "name": "@mapbox/polyline",
+  "author": "Mapbox",
   "description": "Polyline encoding and decoding",
   "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/mapbox/polyline.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "meow": "^5.0.0"
+  },
   "devDependencies": {
     "eslint": "^4.19.1",
     "tap": "^11.1.3"

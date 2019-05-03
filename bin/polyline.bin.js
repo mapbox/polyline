@@ -1,28 +1,62 @@
 #!/usr/bin/env node
 
+const meow = require('meow');
 const polyline = require('../');
 
-const HELP = 'Provide data from stdin and use with --decode (default), --encode, --toGeoJSON, or --fromGeoJSON. Optionally provide a precision with --precision=6\n';
+const cli = meow(
+  `
+  Provide data from stdin and use with --decode (default), --encode, --toGeoJSON, or --fromGeoJSON. Optionally provide precision.
 
-let precision = 5;
+  Usage
+    $ cat file.json | polyline --fromGeoJSON > file.geojson
+  Options
+    --decode -d return an array of lat, lon pairs
+    --toGeoJSON return GeoJSON from string-encoded polyline
+    --encode -e return a string-encoded polyline
+    --fromGeoJSON return a string-encoded polyline from GeoJSON
+    --precision, -p set a precision.
+`,
+  {
+    flags: {
+      decode: {
+        type: 'boolean',
+        alias: 'd'
+      },
+      toGeoJSON: {
+        type: 'boolean'
+      },
+      encode: {
+        type: 'boolean',
+        alias: 'e'
+      },
+      fromGeoJSON: {
+        type: 'boolean'
+      },
+      precision: {
+        type: 'string',
+        alias: 'p'
+      }
+    }
+  }
+);
+
+const {
+  precision,
+  decode,
+  toGeoJSON,
+  toGeoJson,
+  encode,
+  fromGeoJSON,
+  fromGeoJson
+} = cli.flags;
+
+let p;
+
+if (precision) {
+  p = parseInt(precision, 10);
+}
+
 let rawInput = '';
-const mode = process.argv[2] || '--decode';
-
-if (process.argv[3]) {
-  if (process.argv[3].startsWith('-p=')) {
-    precision = parseInt(process.argv[3].split('-p=').pop(), 10);
-  }
-  if (process.argv[3].startsWith('--precision=')) {
-    precision = parseInt(process.argv[3].split('--precision=').pop(), 10);
-  }
-}
-
-if (mode === '--help' || mode === '-h') {
-  exit();
-}
-
-process.stdin.setEncoding('utf8');
-
 process.stdin.on('readable', function() {
   const chunk = process.stdin.read();
   if (chunk !== null) {
@@ -31,27 +65,30 @@ process.stdin.on('readable', function() {
 });
 
 process.stdin.on('end', function() {
-  const converted = convert(rawInput, mode);
+  const converted = convert(rawInput);
   if (!converted) {
     exit();
   }
-  process.stdout.write(JSON.stringify(converted));
+  process.stdout.write(`${JSON.stringify(converted)}\n`);
 });
 
-function convert(rawString, mode) {
-  switch(mode) {
-    case '--decode' :
-      return polyline.decode(rawString, precision);
-    case '--encode' :
-      return polyline.encode(rawString, precision);
-    case '--toGeoJSON':
-      return polyline.toGeoJSON(rawString, precision);
-    case '--fromGeoJSON' :
-      return polyline.fromGeoJSON(JSON.parse(rawString), precision);
+function convert(rawString) {
+  if (encode) {
+    return polyline.encode(rawString, p);
   }
+
+  if (toGeoJSON || toGeoJson) {
+    return polyline.toGeoJSON(rawString, p);
+  }
+
+  if (fromGeoJSON || fromGeoJson) {
+    return polyline.fromGeoJSON(JSON.parse(rawString), p);
+  }
+
+  return polyline.decode(rawString, p);
 }
 
 function exit() {
-  process.stdout.write(HELP);
+  process.stdout.write(cli.showHelp());
   process.exit();
 }

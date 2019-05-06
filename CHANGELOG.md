@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0 (2019-05-06)
+
+* Added `--precision` command line option.
+* Fix to precision to support a value of `0`.
+
 ## 1.0.0 (2018-04-01)
 
 * Added `--toGeoJSON` command line option.

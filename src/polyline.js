@@ -67,7 +67,7 @@ polyline.decode = function(str, precision) {
         result = 0;
 
         do {
-            byte = str.charCodeAt(index++) - 63;
+            byte = Math.max(str.charCodeAt(index++) - 63, 0);
             result |= (byte & 0x1f) << shift;
             shift += 5;
         } while (byte >= 0x20);
@@ -77,7 +77,7 @@ polyline.decode = function(str, precision) {
         shift = result = 0;
 
         do {
-            byte = str.charCodeAt(index++) - 63;
+            byte = Math.max(str.charCodeAt(index++) - 63, 0);
             result |= (byte & 0x1f) << shift;
             shift += 5;
         } while (byte >= 0x20);

@@ -5,6 +5,7 @@ var test = require('tap').test,
 
 test('polyline', function(t) {
     var example = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]],
+        exampleWithZ = [[38.5, -120.2, 0], [40.7, -120.95, 0], [43.252, -126.453, 0]],
         example_zero = [[39, -120], [41, -121], [43, -126]],
         // encoded value will enclude slashes -> tests escaping
         example_slashes = [[35.6, -82.55], [35.59985, -82.55015], [35.6, -82.55]],
@@ -66,6 +67,11 @@ test('polyline', function(t) {
 
         t.test('encodes an Array of lat/lon pairs into a String', function(t) {
             t.equal(polyline.encode(example), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
+            t.end();
+        });
+
+        t.test('encodes an Array of lat/lon/z into the same string as lat/lon', function(t) {
+            t.equal(polyline.encode(exampleWithZ), '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
             t.end();
         });
 

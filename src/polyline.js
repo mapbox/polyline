@@ -118,7 +118,8 @@ polyline.encode = function(coordinates, precision) {
 function flipped(coords) {
     var flipped = [];
     for (var i = 0; i < coords.length; i++) {
-        flipped.push(coords[i].slice().reverse());
+        var coord = coords[i].slice();
+        flipped.push([coord[1], coord[0]]);
     }
     return flipped;
 }

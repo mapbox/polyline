@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.1 (2020-05-18)
+* Fix `npm audit` warnings from a dependency.
+
 ## 1.1.0 (2019-05-06)
 
 * Added `--precision` command line option.

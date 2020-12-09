@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.com/mapbox/polyline.png?branch=master)](http://travis-ci.com/mapbox/polyline) [![Coverage Status](https://coveralls.io/repos/mapbox/polyline/badge.svg)](https://coveralls.io/r/mapbox/polyline)
+[![Build Status](https://travis-ci.com/mapbox/polyline.svg)](http://travis-ci.com/mapbox/polyline) [![Coverage Status](https://coveralls.io/repos/mapbox/polyline/badge.svg)](https://coveralls.io/r/mapbox/polyline)
 
 # polyline
 

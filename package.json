@@ -19,9 +19,6 @@
     "test": "eslint --no-eslintrc -c .eslintrc src && tap --coverage test/polyline.test.js"
   },
   "main": "src/polyline.js",
-  "engines": {
-    "node": "*"
-  },
   "bin": {
     "polyline": "bin/polyline.bin.js"
   }

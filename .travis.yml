@@ -1,19 +1,9 @@
 language: node_js
-
-matrix:
-  include:
-    - node_js: 10
-      script:
-        - npm test
-      after_script:
-        - npm run upload-coverage
-    - node_js: 12
-      script:
-        - npm test
-      after_script:
-        - npm run upload-coverage
-    - node_js: 14
-      script:
-        - npm test
-      after_script:
-        - npm run upload-coverage
+node_js:
+  - 10
+  - 12
+  - 14
+script:
+  - npm test
+after_script:
+  - npm run upload-coverage

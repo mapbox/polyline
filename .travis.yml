@@ -1,6 +1,9 @@
-sudo: false
 language: node_js
 node_js:
-  - "4"
-before_install:
-  - npm install -g npm@~1.4.6
+  - 10
+  - 12
+  - 14
+script:
+  - npm test
+after_script:
+  - npm run upload-coverage

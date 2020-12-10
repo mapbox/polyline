@@ -1,5 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/mapbox/polyline.png?branch=master)](http://travis-ci.org/mapbox/polyline) [![Coverage Status](https://coveralls.io/repos/mapbox/polyline/badge.svg)](https://coveralls.io/r/mapbox/polyline)
-
+[![Build Status](https://travis-ci.com/mapbox/polyline.svg)](http://travis-ci.com/mapbox/polyline) [![codecov](https://codecov.io/gh/mapbox/polyline/branch/master/graph/badge.svg)](https://codecov.io/gh/mapbox/polyline)
 # polyline
 
 A simple [google-esque polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)

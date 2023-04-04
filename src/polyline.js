@@ -48,9 +48,9 @@ polyline.decode = function(str, precision) {
         lat = 0,
         lng = 0,
         coordinates = [],
-        shift = 0,
-        result = 0,
-        byte = null,
+        shift,
+        result,
+        byte,
         latitude_change,
         longitude_change,
         factor = Math.pow(10, Number.isInteger(precision) ? precision : 5);
@@ -60,8 +60,7 @@ polyline.decode = function(str, precision) {
     // loop iteration, a single coordinate is decoded.
     while (index < str.length) {
 
-        // Reset shift, result, and byte
-        byte = null;
+        // Reset shift and result
         shift = 1;
         result = 0;
 
@@ -118,7 +117,7 @@ polyline.encode = function(coordinates, precision) {
 function flipped(coords) {
     var flipped = [];
     for (var i = 0; i < coords.length; i++) {
-        var coord = coords[i].slice();
+        var coord = coords[i];
         flipped.push([coord[1], coord[0]]);
     }
     return flipped;

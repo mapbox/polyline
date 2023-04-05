@@ -13,12 +13,10 @@ var polyline = {};
 
 function py2_round(value) {
     // Google's polyline algorithm uses the same rounding strategy as Python 2, which is different from JS for negative values
-    return Math.floor(Math.abs(value) + 0.5) * (value >= 0 ? 1 : -1);
+    return value < 0 ? Math.ceil(value - 0.5) : Math.round(value);
 }
 
-function encode(current, previous, factor) {
-    current = py2_round(current * factor);
-    previous = py2_round(previous * factor);
+function encode(current, previous) {
     var coordinate = (current - previous) * 2;
     if (coordinate < 0) {
         coordinate = -coordinate - 1
@@ -100,15 +98,18 @@ polyline.decode = function(str, precision) {
  * @returns {String}
  */
 polyline.encode = function(coordinates, precision) {
-    if (!coordinates.length) { return ''; }
-
     var factor = Math.pow(10, Number.isInteger(precision) ? precision : 5),
-        output = encode(coordinates[0][0], 0, factor) + encode(coordinates[0][1], 0, factor);
+        output = '',
+        bLat = 0,
+        bLon = 0;
 
-    for (var i = 1; i < coordinates.length; i++) {
-        var a = coordinates[i], b = coordinates[i - 1];
-        output += encode(a[0], b[0], factor);
-        output += encode(a[1], b[1], factor);
+    for (var i = 0; i < coordinates.length; i++) {
+        var a = coordinates[i];
+        var aLat = py2_round(a[0] * factor);
+        var aLon = py2_round(a[1] * factor);
+        output += encode(aLat, bLat) + encode(aLon, bLon);
+        bLat = aLat;
+        bLon = aLon;
     }
 
     return output;

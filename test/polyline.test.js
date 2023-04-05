@@ -11,7 +11,8 @@ test('polyline', function(t) {
         example_slashes = [[35.6, -82.55], [35.59985, -82.55015], [35.6, -82.55]],
         example_flipped = [[-120.2, 38.5], [-120.95, 40.7], [-126.453, 43.252]],
         example_rounding = [[0, 0.000006], [0, 0.000002]],
-        example_rounding_negative = [[36.05322, -112.084004], [36.053573, -112.083914], [36.053845, -112.083965]];
+        example_rounding_negative = [[36.05322, -112.084004], [36.053573, -112.083914], [36.053845, -112.083965]],
+        example_high_precision = [[179.1234567895121, -179.1245965456112]];
 
     var geojson = { 'type': 'Feature',
         'geometry': {
@@ -48,6 +49,12 @@ test('polyline', function(t) {
     t.test('#identity', function(t) {
         t.test('feed encode into decode and check if the result is the same as the input', function(t) {
             t.deepEqual(polyline.decode(polyline.encode(example_slashes)), example_slashes);
+            t.end();
+        });
+
+        t.test('feed encode into decode and check if the result is the same as the input with high precision', function(t) {
+            var result = polyline.decode(polyline.encode(example_high_precision, 13), 13)
+            t.deepEqual(result, example_high_precision);
             t.end();
         });
 

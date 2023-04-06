@@ -1,5 +1,7 @@
-[![Build Status](https://travis-ci.com/mapbox/polyline.svg)](http://travis-ci.com/mapbox/polyline) [![codecov](https://codecov.io/gh/mapbox/polyline/branch/master/graph/badge.svg)](https://codecov.io/gh/mapbox/polyline)
-# polyline
+[![Build Status](https://app.travis-ci.com/mapbox/polyline.svg?branch=master)](https://app.travis-ci.com/mapbox/polyline) [![codecov](https://codecov.io/gh/mapbox/polyline/branch/master/graph/badge.svg)](https://codecov.io/gh/mapbox/polyline)
+
+polyline
+---
 
 A simple [google-esque polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
 implementation in Javascript. Compatible with nodejs (`npm install @mapbox/polyline` and the browser (copy `src/polyline.js`)).

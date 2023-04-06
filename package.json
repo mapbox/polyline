@@ -2,7 +2,7 @@
   "name": "@mapbox/polyline",
   "author": "Mapbox",
   "description": "Polyline encoding and decoding",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/mapbox/polyline.git"

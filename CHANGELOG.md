@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.0 (2023-04-06)
+* Allow encoding with higher precision. [#82](https://github.com/mapbox/polyline/pull/82)
+
 ## 1.1.1 (2020-05-18)
 * Fix `npm audit` warnings from a dependency.
 * Fix reversing of coordinates when there are more than 2

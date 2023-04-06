@@ -24,7 +24,7 @@ polyline.decode('_p~iF~ps|U_ulLnnqC_mqNvxq`@');
 // returns an array of lat, lon pairs from polyline6 by passing a precision parameter
 polyline.decode('cxl_cBqwvnS|Dy@ogFyxmAf`IsnA|CjFzCsHluD_k@hi@ljL', 6);
 
-// returns a GeoJSON LineString feature
+// returns a GeoJSON LineString Geometry
 polyline.toGeoJSON('_p~iF~ps|U_ulLnnqC_mqNvxq`@');
 
 // returns a string-encoded polyline (from coordinate ordered lat,lng)

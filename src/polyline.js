@@ -19,17 +19,16 @@ function py2_round(value) {
 function encode(current, previous, factor) {
     current = py2_round(current * factor);
     previous = py2_round(previous * factor);
-    var coordinate = current - previous;
-    coordinate <<= 1;
-    if (current - previous < 0) {
-        coordinate = ~coordinate;
+    var coordinate = (current - previous) * 2;
+    if (coordinate < 0) {
+        coordinate = -coordinate - 1
     }
     var output = '';
     while (coordinate >= 0x20) {
         output += String.fromCharCode((0x20 | (coordinate & 0x1f)) + 63);
-        coordinate >>= 5;
+        coordinate /= 32;
     }
-    output += String.fromCharCode(coordinate + 63);
+    output += String.fromCharCode((coordinate | 0) + 63);
     return output;
 }
 
@@ -63,26 +62,27 @@ polyline.decode = function(str, precision) {
 
         // Reset shift, result, and byte
         byte = null;
-        shift = 0;
+        shift = 1;
         result = 0;
 
         do {
             byte = str.charCodeAt(index++) - 63;
-            result |= (byte & 0x1f) << shift;
-            shift += 5;
+            result += (byte & 0x1f) * shift;
+            shift *= 32;
         } while (byte >= 0x20);
 
-        latitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));
+        latitude_change = (result & 1) ? ((-result - 1) / 2) : (result / 2);
 
-        shift = result = 0;
+        shift = 1;
+        result = 0;
 
         do {
             byte = str.charCodeAt(index++) - 63;
-            result |= (byte & 0x1f) << shift;
-            shift += 5;
+            result += (byte & 0x1f) * shift;
+            shift *= 32;
         } while (byte >= 0x20);
 
-        longitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));
+        longitude_change = (result & 1) ? ((-result - 1) / 2) : (result / 2);
 
         lat += latitude_change;
         lng += longitude_change;

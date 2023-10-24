@@ -2,6 +2,7 @@
   "name": "@mapbox/polyline",
   "author": "Mapbox",
   "description": "Polyline encoding and decoding",
+  "license": "BSD-3-Clause",
   "version": "1.2.1",
   "repository": {
     "type": "git",

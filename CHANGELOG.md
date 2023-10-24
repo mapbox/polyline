@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.1 (2023-09-14)
+* Update dev dependencies. [#86](https://github.com/mapbox/polyline/pull/86)
+
 ## 1.2.0 (2023-04-06)
 * Allow encoding with higher precision. [#82](https://github.com/mapbox/polyline/pull/82)
 

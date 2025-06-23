@@ -1,70 +1,43 @@
 #!/usr/bin/env node
-
-const meow = require('meow');
+const { parseArgs } = require('node:util');
 const polyline = require('../');
 
-const cli = meow(
-  `
-  Provide data from stdin and use with --decode (default), --encode, --toGeoJSON, or --fromGeoJSON. Optionally provide precision.
+let {
+  values: {
+    decode,
+    encode,
+    toGeoJSON,
+    fromGeoJSON,
+    toGeoJson,
+    fromGeoJson,
+    precision,
+  },
+} = parseArgs({
+  options: {
+    decode: { type: 'boolean', short: 'd', default: true },
+    encode: { type: 'boolean', short: 'e' },
+    toGeoJSON: { type: 'boolean' },
+    fromGeoJSON: { type: 'boolean' },
+    precision: { type: 'string', short: 'p' },
+  },
+  strict: false,
+});
 
-  Usage
-    $ cat file.json | polyline --fromGeoJSON > file.geojson
-  Options
-    --decode -d return an array of lat, lon pairs
-    --toGeoJSON return GeoJSON from string-encoded polyline
-    --encode -e return a string-encoded polyline
-    --fromGeoJSON return a string-encoded polyline from GeoJSON
-    --precision, -p set a precision.
-`,
-  {
-    flags: {
-      decode: {
-        type: 'boolean',
-        alias: 'd'
-      },
-      toGeoJSON: {
-        type: 'boolean'
-      },
-      encode: {
-        type: 'boolean',
-        alias: 'e'
-      },
-      fromGeoJSON: {
-        type: 'boolean'
-      },
-      precision: {
-        type: 'string',
-        alias: 'p'
-      }
-    }
-  }
-);
+toGeoJSON = toGeoJSON || toGeoJson;
+fromGeoJSON = fromGeoJSON || fromGeoJson;
+decode = encode ? false : decode;
 
-const {
-  precision,
-  decode,
-  toGeoJSON,
-  toGeoJson,
-  encode,
-  fromGeoJSON,
-  fromGeoJson
-} = cli.flags;
-
-let p;
-
-if (precision) {
-  p = parseInt(precision, 10);
-}
+const p = precision ? parseInt(precision, 10) : undefined;
 
 let rawInput = '';
-process.stdin.on('readable', function() {
+process.stdin.on('readable', function () {
   const chunk = process.stdin.read();
   if (chunk !== null) {
     rawInput += chunk;
   }
 });
 
-process.stdin.on('end', function() {
+process.stdin.on('end', function () {
   const converted = convert(rawInput);
   if (!converted) {
     exit();
@@ -85,10 +58,31 @@ function convert(rawString) {
     return polyline.fromGeoJSON(JSON.parse(rawString), p);
   }
 
-  return polyline.decode(rawString, p);
+  if (decode) {
+    return polyline.decode(rawString, p);
+  }
+
+  process.stderr.write('No valid option provided.\n');
+  showHelp();
+}
+
+function showHelp() {
+  console.log(`
+  Provide data from stdin and use with --decode (default), --encode, --toGeoJSON, or --fromGeoJSON. Optionally provide precision.
+  
+  Usage:
+  $ cat file.json | polyline --fromGeoJSON > file.geojson
+  
+  Options:
+  --decode, -d         Return an array of lat/lon pairs (default)
+  --toGeoJSON          Convert encoded string to GeoJSON
+  --encode, -e         Return a string-encoded polyline
+  --fromGeoJSON        Convert GeoJSON to string-encoded polyline
+  --precision, -p      Set a precision (default is 5)
+  `);
 }
 
 function exit() {
-  process.stdout.write(cli.showHelp());
+  showHelp();
   process.exit();
 }

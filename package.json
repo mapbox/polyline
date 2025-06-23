@@ -8,8 +8,8 @@
     "type": "git",
     "url": "git://github.com/mapbox/polyline.git"
   },
-  "dependencies": {
-    "meow": "^9.0.0"
+  "engines": {
+    "node": ">= 18.3.0"
   },
   "devDependencies": {
     "codecov": "^3.8.3",

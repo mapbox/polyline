@@ -3,7 +3,7 @@
   "author": "Mapbox",
   "description": "Polyline encoding and decoding",
   "license": "BSD-3-Clause",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/mapbox/polyline.git"
@@ -32,5 +32,8 @@
     "include": [
       "src/**"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

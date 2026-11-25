@@ -1,7 +1,8 @@
 'use strict';
 
 var test = require('tap').test,
-    polyline = require('../');
+    polyline = require('../'),
+    vm = require('vm');
 
 test('polyline', function(t) {
     var example = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]],
@@ -67,6 +68,26 @@ test('polyline', function(t) {
     });
 
     t.test('#encode()', function(t) {
+        t.test('rejects non-finite coordinates and overflow without hanging', function(t) {
+            [
+                'polyline.encode([[Infinity, 0]])',
+                'polyline.encode([[0, -Infinity]])',
+                'polyline.encode([[NaN, 0]])',
+                'polyline.encode([[1e308, 0]])',
+                'polyline.encode([[1, 0]], 309)',
+                'polyline.encode([[1e307, 0], [-1e308, 0]], 0)'
+            ].forEach(function(expression) {
+                t.throws(function() {
+                    // Bound regressions of the encoding loop as well as checking the error.
+                    vm.runInNewContext(expression, { polyline: polyline }, { timeout: 1000 });
+                }, {
+                    name: 'RangeError',
+                    message: 'Coordinate is not finite at the given precision'
+                }, expression);
+            });
+            t.end();
+        });
+
         t.test('encodes an empty Array', function(t) {
             t.equal(polyline.encode([]), '');
             t.end();

@@ -20,6 +20,9 @@ function encode(current, previous, factor) {
     current = py2_round(current * factor);
     previous = py2_round(previous * factor);
     var coordinate = (current - previous) * 2;
+    if (!Number.isFinite(coordinate)) {
+        throw new RangeError('Coordinate is not finite at the given precision');
+    }
     if (coordinate < 0) {
         coordinate = -coordinate - 1
     }

@@ -51,6 +51,12 @@ Install globally or run `./node_modules/.bin/polyline`.
 
 Send input via stdin and use `--decode`, `--encode`, `--toGeoJSON`, or `--fromGeoJSON` flags. If omitted will default to `--decode`.
 
+`--encode` reads a JSON array of `[lat, lng]` pairs; `--fromGeoJSON` reads a
+GeoJSON LineString geometry or feature. Output is JSON, including a quoted string
+for encoded polylines. The decoding modes accept either that JSON string or a raw
+polyline, with an optional trailing line ending, so output can be piped directly
+into another conversion.
+
 Example :
 
 ```

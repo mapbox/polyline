@@ -22,15 +22,17 @@ const cli = meow(
         type: 'boolean',
         alias: 'd'
       },
-      toGeoJSON: {
-        type: 'boolean'
+      toGeoJson: {
+        type: 'boolean',
+        alias: 'toGeoJSON'
       },
       encode: {
         type: 'boolean',
         alias: 'e'
       },
-      fromGeoJSON: {
-        type: 'boolean'
+      fromGeoJson: {
+        type: 'boolean',
+        alias: 'fromGeoJSON'
       },
       precision: {
         type: 'string',
@@ -43,10 +45,8 @@ const cli = meow(
 const {
   precision,
   decode,
-  toGeoJSON,
   toGeoJson,
   encode,
-  fromGeoJSON,
   fromGeoJson
 } = cli.flags;
 
@@ -66,29 +66,25 @@ process.stdin.on('readable', function() {
 
 process.stdin.on('end', function() {
   const converted = convert(rawInput);
-  if (!converted) {
-    exit();
-  }
   process.stdout.write(`${JSON.stringify(converted)}\n`);
 });
 
 function convert(rawString) {
   if (encode) {
-    return polyline.encode(rawString, p);
+    return polyline.encode(JSON.parse(rawString), p);
   }
 
-  if (toGeoJSON || toGeoJson) {
-    return polyline.toGeoJSON(rawString, p);
-  }
-
-  if (fromGeoJSON || fromGeoJson) {
+  if (fromGeoJson) {
     return polyline.fromGeoJSON(JSON.parse(rawString), p);
   }
 
-  return polyline.decode(rawString, p);
-}
+  // Accept both raw polyline files and the JSON strings emitted by this CLI.
+  const trimmed = rawString.trim();
+  const encoded = trimmed[0] === '"' ? JSON.parse(trimmed) : trimmed;
 
-function exit() {
-  process.stdout.write(cli.showHelp());
-  process.exit();
+  if (toGeoJson) {
+    return polyline.toGeoJSON(encoded, p);
+  }
+
+  return polyline.decode(encoded, p);
 }

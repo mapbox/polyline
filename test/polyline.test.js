@@ -1,7 +1,77 @@
 'use strict';
 
 var test = require('tap').test,
-    polyline = require('../');
+    polyline = require('../'),
+    spawnSync = require('child_process').spawnSync,
+    cli = require('path').join(__dirname, '../bin/polyline.bin.js');
+
+function runCli(t, args, input) {
+    var result = spawnSync(process.execPath, [cli].concat(args), {
+        input: input,
+        encoding: 'utf8',
+        timeout: 5000
+    });
+    t.equal(result.status, 0, result.stderr || 'CLI exits successfully');
+    return result.stdout;
+}
+
+test('polyline CLI', function(t) {
+    var coordinates = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]],
+        encoded = '_p~iF~ps|U_ulLnnqC_mqNvxq`@',
+        geometry = {
+            type: 'LineString',
+            coordinates: [[-120.2, 38.5], [-120.95, 40.7], [-126.453, 43.252]]
+        };
+
+    t.test('encodes JSON coordinates with default and custom precision', function(t) {
+        t.equal(runCli(t, ['--encode'], JSON.stringify(coordinates)), JSON.stringify(encoded) + '\n');
+        t.equal(runCli(t, ['-e', '-p', '0'], JSON.stringify(coordinates)), '"mAnFC@CH"\n');
+        t.equal(runCli(t, ['-e', '-p', '6'], JSON.stringify(coordinates)), '"_izlhA~rlgdF_{geC~ywl@_kwzCn`{nI"\n');
+        t.end();
+    });
+
+    t.test('decodes raw polylines with file line endings', function(t) {
+        t.equal(runCli(t, [], encoded + '\n'), JSON.stringify(coordinates) + '\n');
+        t.equal(runCli(t, ['--decode'], encoded + '\r\n'), JSON.stringify(coordinates) + '\n');
+        t.equal(runCli(t, ['-d'], encoded), JSON.stringify(coordinates) + '\n');
+        t.end();
+    });
+
+    t.test('feeds JSON encoded output back into both decoders', function(t) {
+        var output = runCli(t, ['--encode'], JSON.stringify(coordinates));
+        t.equal(runCli(t, ['--decode'], output), JSON.stringify(coordinates) + '\n');
+        t.equal(runCli(t, ['--toGeoJSON'], output), JSON.stringify(geometry) + '\n');
+        t.equal(runCli(t, ['--fromGeoJSON'], JSON.stringify(geometry)), output);
+        t.end();
+    });
+
+    t.test('preserves escaped backslashes during a CLI round trip', function(t) {
+        var points = [[35.6, -82.55], [35.59985, -82.55015], [35.6, -82.55]],
+            output = runCli(t, ['--encode'], JSON.stringify(points));
+        t.equal(runCli(t, [], output), JSON.stringify(points) + '\n');
+        t.end();
+    });
+
+    t.test('accepts camel-case and kebab-case GeoJSON options', function(t) {
+        ['--toGeoJSON', '--toGeoJson', '--to-geo-json'].forEach(function(flag) {
+            t.equal(runCli(t, [flag], encoded), JSON.stringify(geometry) + '\n');
+        });
+        ['--fromGeoJSON', '--fromGeoJson', '--from-geo-json'].forEach(function(flag) {
+            t.equal(runCli(t, [flag], JSON.stringify(geometry)), JSON.stringify(encoded) + '\n');
+        });
+        t.end();
+    });
+
+    t.test('accepts empty arrays and empty encoded strings', function(t) {
+        t.equal(runCli(t, ['--encode'], '[]'), '""\n');
+        t.equal(runCli(t, ['--fromGeoJSON'], '{"type":"LineString","coordinates":[]}'), '""\n');
+        t.equal(runCli(t, [], '""\n'), '[]\n');
+        t.equal(runCli(t, [], ''), '[]\n');
+        t.end();
+    });
+
+    t.end();
+});
 
 test('polyline', function(t) {
     var example = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]],
